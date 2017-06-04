@@ -5,27 +5,20 @@
 def sum arr
   # YOUR CODE HERE
   sum=0
-  arr.each { |i| sum+=i } unless arr.nil? 
+  arr.each { |i| sum+=i } if arr
   sum
 end
 
 def max_2_sum arr
   # YOUR CODE HERE
-  case arr.length
-  when 0
-    return 0
-  when 1
-    return arr[0]
-  else
-    return arr.max + arr.sort.reverse[1]
-  end
-  #arr.empty? ? sum : arr.max + arr.sort.reverse[1]
+    return 0 if arr.empty?
+    arr.length >1 ? arr.max + arr.sort.reverse[1] : arr[0]
 end
 
 def sum_to_n? arr, n
   # YOUR CODE HERE
   arr1 = arr
-  arr.any? {|i| arr1.any? {|j| i+j == n && arr.index(i) != arr1.index(j) } } unless arr.nil?
+  arr.any? {|i| arr1.any? {|j| i+j == n && arr.index(i) != arr1.index(j) } } if arr
 end
 
 # Part 2
@@ -37,13 +30,14 @@ end
 
 def starts_with_consonant? s
   # YOUR CODE HERE
-  /\A[^aeiou\W\d_]/ =~ s.downcase ? true : false
+  /\A[^_aeiou\W\d]/ =~ s.downcase ? true : false
 end
 
 def binary_multiple_of_4? s
   # YOUR CODE HERE
     
     s =~ /[\D23456789\s]/ || s.empty? ? false : s.to_i(2) % 4 == 0
+    #s =~ /[\d^23456789]/ ? s.to_i(2) % 4 == 0 : false
 end
 
 # Part 3
@@ -59,16 +53,9 @@ class BookInStock
   end  
   
   def price_as_string
- 
-#    @price.round(2).to_s =~ /\. 
-    
-    case @price.round(2).to_s.reverse =~ /\./
-      when  1
-        '$' << @price.round(2).to_s << '0'
-      when 2  
-        '$' << @price.round(2).to_s 
-      else
-        '$' << @price.round(2).to_s << '00'
-    end
+     price_str ='$' + @price.round(2).to_s
+    (2-(@price.round(2).to_s.reverse =~ /\./)).times {price_str += '0'}
+    price_str
   end
+
 end
